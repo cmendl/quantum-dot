@@ -1,0 +1,70 @@
+# set this to the directory of your Mathematica installation
+MLINKDIR = /usr/local/Wolfram/Mathematica/10.0/SystemFiles/Links/MathLink/DeveloperKit
+
+# set this value with the result of evaluating $SystemID
+SYS = Linux-x86-64
+CADDSDIR = ${MLINKDIR}/${SYS}/CompilerAdditions/
+
+LAPACKDIR = /opt/acml5.3.1/ifort64
+
+INCDIR = ${CADDSDIR}
+LIBDIR = ${CADDSDIR}
+
+INCDIRLP = ${LAPACKDIR}/include
+LIBDIRLP = ${LAPACKDIR}/lib
+
+# set these with appropriate libs for your system
+# -lm
+EXTRALIBS = -lpthread -lrt -lacml -lgsl -lgslcblas
+MLLIB = ML64i4
+
+MPREP = ${CADDSDIR}/mprep
+
+CCOPTS = -Wall -m64 -O3 -g
+
+all: angles.o comotion.o coulomb.o density_int.o eigensystem.o energy.o gauss_laguerre.o interpolation.o potential.o scf_step.o util.o qdot2D_mlink_linux.o qdot2D_ML.o
+	${CC} ${CCOPTS} -I${INCDIR} -L${LIBDIR} -L${LIBDIRLP} -l${MLLIB} ${EXTRALIBS} -o ${SYS}/qdot2D_ML $?
+
+angles.o: ../src/angles.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+comotion.o: ../src/comotion.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+coulomb.o: ../src/coulomb.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+density_int.o: ../src/density_int.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+eigensystem.o: ../src/eigensystem.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+energy.o: ../src/energy.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+gauss_laguerre.o: ../src/gauss_laguerre.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+interpolation.o: ../src/interpolation.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+potential.o: ../src/potential.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+scf_step.o: ../src/scf_step.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+util.o: ../src/util.c
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+.c.o:
+	${CC} -c -I${INCDIR} -I${INCDIRLP} -I../include ${CCOPTS} $<
+
+qdot2D_mlink_linux.c: qdot2D_mlink.tm
+	${MPREP} -o $@ $?
+
+
+clean:
+	rm *.o
+

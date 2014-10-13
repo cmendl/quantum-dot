@@ -1,0 +1,2 @@
+# ignore compiled C object files
+*.o

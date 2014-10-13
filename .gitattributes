@@ -1,0 +1,2 @@
+# treat Mathematica notebooks as binary files
+*.nb binary
