@@ -1,2 +1,3 @@
-# treat Mathematica notebooks as binary files
-*.nb binary
+# treat C source files as text files
+*.h text
+*.c text
